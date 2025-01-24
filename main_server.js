@@ -3,6 +3,7 @@ const app = express();
 const {} = require("./database");
 // const cartRoutes = require("./routes/cartRoutes")
 const userRoutes = require("./routes/userRoutes")
+const counterRoutes = require("./routes/counterRoutes")
 
 app.get("/", (req,res)=>{
     res.json({message:"hello user"});
@@ -12,7 +13,7 @@ app.use(express.json());
 
 // app.use('/cart', cartRoutes);
 app.use('/users', userRoutes);
-// app.use('/counter');
+app.use('/counter', counterRoutes);
 // app.use('/dish');
 
 
