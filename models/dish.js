@@ -5,8 +5,8 @@ const DishSchema = new mongoose.Schema({
     description:{type:String},
     image: {type:String},
     price: {type:Number, required:true, min:1},
-    availability: {String:Boolean, default:true, required:true},
-    counter_id: {type:mongoose.Schema.Types.ObjectId, required:true}
+    availability: {type:Boolean, default:true, required:true},
+    counter_id: {type:mongoose.Schema.Types.ObjectId, ref:"Counter", required:true}
 })
 
 module.exports = mongoose.model("Dish", DishSchema)
