@@ -1,17 +1,21 @@
 const express = require("express");
 const app = express();
-const {} = require("./database");
+const {} = require("../database");
+const morgan = require('morgan')
 // const cartRoutes = require("./routes/cartRoutes")
-const userRoutes = require("./routes/userRoutes")
-const counterRoutes = require("./routes/counterRoutes")
+const userRoutes = require("../routes/userRoutes")
+const counterRoutes = require("../routes/counterRoutes")
+const authRoutes = require("../routes/authRoutes")
 
 app.get("/", (req,res)=>{
     res.json({message:"hello user"});
 })
 
 app.use(express.json());
+app.use(morgan("dev"));
 
 // app.use('/cart', cartRoutes);
+app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/counter', counterRoutes);
 // app.use('/dish');
