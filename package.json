@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon main_server.js"
+    "start": "nodemon main_server/main_server.js",
+    "auth": "nodemon auth_server/auth_server.js"
   },
   "author": "Shashwat Tewari",
   "license": "ISC",
