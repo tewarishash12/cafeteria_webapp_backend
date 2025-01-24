@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
         if(!validation)
             return res.status(401).json({message:"Password entered do not match"});
         
-        const user = {username:userInfo.username, email:userInfo.email, phoneNo: userInfo.phoneNo}
+        const user = {username:userInfo.username, email:userInfo.email, phoneNo: userInfo.phoneNo, role:userInfo.role}
         const refreshToken = jwt.sign({user}, process.env.REFRESH_TOKEN_SECRET)
         refreshTokens.add(refreshToken);
         
