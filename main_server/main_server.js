@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const {} = require("../database/database");
+const {} = require("./database");
 const morgan = require('morgan')
 // const cartRoutes = require("./routes/cartRoutes")
 const dishRoutes = require("./main_routes/dishRoutes")
