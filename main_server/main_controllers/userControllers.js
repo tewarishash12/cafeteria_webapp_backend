@@ -10,7 +10,6 @@ exports.allUserDetails = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-
 }
 
 exports.createUser = async (req, res) => {
@@ -62,5 +61,15 @@ exports.updateUser = async (req, res) => {
         res.status(201).json(user);
     } catch (err) {
         res.status(500).json({ message: err.message });
+    }
+}
+
+exports.me = async(req,res)=>{
+    try {
+        const userInfo = req.user;
+        console.log(userInfo)
+        res.status(201).json(userInfo);
+    } catch(err) {
+
     }
 }
