@@ -4,7 +4,8 @@
   "description": "Main server to control the functionality of the files",
   "main": "main_server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon main_server.js"
   },
   "author": "",
   "license": "ISC",
