@@ -1,4 +1,4 @@
-const User = require("../../models/user");
+const User = require("../auth_model/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -7,7 +7,7 @@ const refreshTokens = new Set();
 
 exports.register = async (req, res) => {
     try {
-        const { username, email, phoneNo, password, role } = req.body;
+        const { username, email, phoneNo, password, role='customer' } = req.body;
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt)
         const user = new User({ username, email, phoneNo, password: hashedPassword, role });

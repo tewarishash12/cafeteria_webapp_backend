@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const {} = require("../database/database");
+const {} = require("./database");
 const morgan = require('morgan');
 const authRoutes = require("./auth_routes/authRoutes")
 
