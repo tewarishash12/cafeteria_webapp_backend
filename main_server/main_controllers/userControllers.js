@@ -15,10 +15,10 @@ exports.allUserDetails = async (req, res) => {
 
 exports.createUser = async (req, res) => {
     try {
-        const { username, email, phoneNo, password } = req.body;
+        const { username, email, phoneNo, password, role="merchant" } = req.body;
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt)
-        const user = new User({username, email, phoneNo, password:hashedPassword, role:"merchant"});
+        const user = new User({username, email, phoneNo, password:hashedPassword, role});
         const result = await user.save();
         res.status(201).json({ message: "New user created successfully" });
     } catch (err) {
@@ -52,13 +52,13 @@ exports.deleteUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     try {
-        const { username, email, phoneNo } = req.body;
+        const { username, email, phoneNo, role } = req.body;
         const userId = await User.findById(req.params.id);
         
         if (!userId)
             return res.status(404).json({ message: "Requested user doesn't exist" });
 
-        const user = await User.findByIdAndUpdate({ _id: req.params.id }, { username: username, email: email, phoneNo: phoneNo }, { new: true });
+        const user = await User.findByIdAndUpdate({ _id: req.params.id }, { username: username, email: email, phoneNo: phoneNo, role: role }, { new: true });
         res.status(201).json(user);
     } catch (err) {
         res.status(500).json({ message: err.message });
