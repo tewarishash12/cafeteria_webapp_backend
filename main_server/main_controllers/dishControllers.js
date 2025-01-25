@@ -1,4 +1,4 @@
-const Dish = require("../../models/dish");
+const Dish = require("../main_model/dish");
 
 exports.allDishDetails = async (req, res) => {
     try {

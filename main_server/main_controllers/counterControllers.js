@@ -1,4 +1,4 @@
-const Counter = require('../../models/counter')
+const Counter = require('../main_model/counter')
 
 exports.allCounters = async (req, res) => {
     try {
