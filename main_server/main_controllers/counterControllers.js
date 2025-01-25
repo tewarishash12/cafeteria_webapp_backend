@@ -2,14 +2,13 @@ const Counter = require('../main_model/counter')
 
 exports.allCounters = async (req, res) => {
     try {
-        const counters = await Counter.find().select('-__v -_id');
+        const counters = await Counter.find().select('-__v -_id').populate("merchant_id", "username phoneNo -_id");
         if (!counters)
             return res.status(404).json({ message: "Something unexpected is requested" })
         res.status(201).json(counters);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-
 }
 
 exports.createCounter = async (req, res) => {
@@ -24,7 +23,7 @@ exports.createCounter = async (req, res) => {
 
 exports.counterDetailById = async (req, res) => {
     try {
-        const counter = await Counter.findById(req.params.id).select('-__v -_id');
+        const counter = await Counter.findById(req.params.id).select('-__v -_id').populate("merchant_id", "username phoneNo -_id");
         if (!counter)
             return res.status(404).json({ message: "Requested user doesn't exist" });
         res.status(201).json(counter);

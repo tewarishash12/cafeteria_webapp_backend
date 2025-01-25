@@ -2,7 +2,7 @@ const Dish = require("../main_model/dish");
 
 exports.allDishDetails = async (req, res) => {
     try {
-        const dishes = await Dish.find().select('-__v -_id');
+        const dishes = await Dish.find().select('-__v -_id').populate("counter_id", "shop_name -_id");
         if (!dishes)
             return res.status(404).json({ message: "Something unexpected is requested" })
         res.status(201).json(dishes);
