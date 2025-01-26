@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const CartItem = new mongoose.Schema({
-    item: [{type: mongoose.Schema.Types.ObjectId, ref:"Dish"}],
-    quantity: {type:Number, min:1 }
+    item: {type: mongoose.Schema.Types.ObjectId, ref:"Dish"},
+    quantity: {type:Number, default:1 }
 })
 
 const UserSchema = new mongoose.Schema({
