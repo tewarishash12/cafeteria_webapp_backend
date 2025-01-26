@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs")
 
 exports.allUserDetails = async (req, res) => {
     try {
-        const users = await User.find().select('-cart -__v -_id');
+        const users = await User.find().select('-cart -__v');
         if (!users)
             return res.status(404).json({ message: "Something unexpected is requested" })
         res.status(201).json(users);
@@ -27,7 +27,7 @@ exports.createUser = async (req, res) => {
 
 exports.userDetailById = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).select('-cart -__v -_id');
+        const user = await User.findById(req.params.id).select('-cart -__v');
         if (!user)
             return res.status(404).json({ message: "Requested user doesn't exist" });
         res.status(201).json(user);
@@ -68,8 +68,9 @@ exports.me = async(req,res)=>{
     try {
         const userInfo = req.user;
         console.log(userInfo)
-        res.status(201).json(userInfo);
+        const user = await User.findOne({username:userInfo.username}).select("-password -__v").populate("cart.item");
+        res.status(201).json(user);
     } catch(err) {
-
+        res.status(500).json({message:err.message});
     }
 }
