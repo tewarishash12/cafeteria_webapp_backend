@@ -48,12 +48,3 @@ exports.updateDishById = async (req, res) => {
     }
 }
 
-exports.getDishesByCounterId = async (req,res) =>{
-    try {
-        const id = req.params.id;
-        const items = await Dish.find({counter_id: id});
-        res.status(201).json(items);
-    } catch(err) {
-        res.status(500).json({message:err.message})
-    }
-}
