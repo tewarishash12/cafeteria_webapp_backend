@@ -12,6 +12,4 @@ router.delete("/id/:id", deleteCounterById);
 
 router.put("/id/:id", updateCounter);
 
-router.get("/id/:id", getDishesByCounterId);
-
 module.exports = router;
