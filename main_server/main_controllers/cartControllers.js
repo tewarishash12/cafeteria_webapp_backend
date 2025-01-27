@@ -13,7 +13,10 @@ exports.addToCart = async (req, res) => {
         if (!dish)
             return res.status(401).json({ message: "This dish doesn't exist in database" });
 
-        user.cart.push({ item: dish_id, quantity: 1 })
+        const existingCartItem = user.cart.find(cartItem => cartItem.item.toString() === dish_id);
+
+        if(!existingCartItem)
+            user.cart.push({ item: dish_id, quantity: 1 })
 
         const result = await user.save();
 
