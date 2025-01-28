@@ -13,9 +13,12 @@ exports.allDishDetails = async (req, res) => {
 
 exports.addDish = async (req, res) => {
     try {
-        const dish = new Dish(req.body);
+        const { dish_name,description,image,availability,counter_id, price } = req.body
+        const intPrice = parseInt(price)
+        const dish = new Dish({ dish_name,description,image,availability,counter_id, price:intPrice });
         const result = await dish.save();
-        res.status(201).json({ message: "New user created successfully" });
+        const dishes = await Dish.find();
+        res.status(201).json({ dishes });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
