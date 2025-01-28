@@ -5,7 +5,7 @@ exports.allDishDetails = async (req, res) => {
         const dishes = await Dish.find().select('-__v').populate("counter_id", "shop_name");
         if (!dishes)
             return res.status(404).json({ message: "Something unexpected is requested" })
-        res.status(201).json(dishes);
+        res.status(201).json({dishes});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -29,7 +29,7 @@ exports.deleteDishById = async (req, res) => {
         const dish = await Dish.findByIdAndDelete(req.params.id);
         
         const dishes = await Dish.find();
-        res.status(201).json(dishes);
+        res.status(201).json({dishes});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -47,7 +47,7 @@ exports.updateDishById = async (req, res) => {
         const dish = await Dish.findByIdAndUpdate({ _id: req.params.id }, { dish_name: dish_name, description: description, image: image, price: price, availability: availability }, { new: true });
 
         const dishes = await Dish.find();
-        res.status(201).json(dishes);
+        res.status(201).json({dishes});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
