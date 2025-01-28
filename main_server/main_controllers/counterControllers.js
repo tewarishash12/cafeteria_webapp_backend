@@ -13,10 +13,24 @@ exports.allCounters = async (req, res) => {
 }
 
 exports.createCounter = async (req, res) => {
+    console.log(req.body)
     try {
-        const counter = new Counter(req.body);
-        const result = await counter.save();
-        res.status(201).json({ message: "New user created successfully" });
+        const { shop_name, merchant_id } = req.body;
+
+        if (!shop_name || !merchant_id || !Array.isArray(merchant_id) || merchant_id.length === 0) {
+            return res.status(400).json({ message: "Shop name and at least one merchant_id are required." });
+        }
+
+        const counter = new Counter({
+            shop_name,
+            merchant_id,
+        });
+
+        await counter.save();
+
+        const counters = await Counter.find().populate("merchant_id"); // Fetch merchant details
+
+        res.status(201).json({ counters });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -38,11 +52,11 @@ exports.deleteCounterById = async (req, res) => {
         const counterId = await Counter.findById(req.params.id);
         if (!counterId)
             return res.status(404).json({ message: "Requested user doesn't exist" });
-        const counter = await Counter.findByIdAndDelete(req.params.id);
+        await Counter.findByIdAndDelete(req.params.id);
+        const counter = await Counter.find();
 
         await Dish.deleteMany({counter_id:counterId});
         const dishes = await Dish.find();
-        
 
         res.status(201).json({counter, dishes});
     } catch (err) {
