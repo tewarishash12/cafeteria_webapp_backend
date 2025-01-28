@@ -28,7 +28,7 @@ exports.deleteDishById = async (req, res) => {
             return res.status(404).json({ message: "Requested user doesn't exist" });
         const dish = await Dish.findByIdAndDelete(req.params.id);
         
-        const dishes = await Dish.find();
+        const dishes = await Dish.find().populate('counter_id');
         res.status(201).json({dishes});
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -46,7 +46,7 @@ exports.updateDishById = async (req, res) => {
 
         const dish = await Dish.findByIdAndUpdate({ _id: req.params.id }, { dish_name: dish_name, description: description, image: image, price: price, availability: availability }, { new: true });
 
-        const dishes = await Dish.find();
+        const dishes = await Dish.find().populate('counter_id');
         res.status(201).json({dishes});
     } catch (err) {
         res.status(500).json({ message: err.message });
