@@ -1,11 +1,12 @@
 const Counter = require('../main_model/counter')
+const Dish = require('../main_model/dish')
 
 exports.allCounters = async (req, res) => {
     try {
         const counters = await Counter.find().select('-__v').populate("merchant_id", "username phoneNo");
         if (!counters)
             return res.status(404).json({ message: "Something unexpected is requested" })
-        res.status(201).json(counters);
+        res.status(201).json({counters});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -26,12 +27,11 @@ exports.counterDetailById = async (req, res) => {
         const counter = await Counter.findById(req.params.id).select('-__v').populate("merchant_id", "username phoneNo");
         if (!counter)
             return res.status(404).json({ message: "Requested user doesn't exist" });
-        res.status(201).json(counter);
+        res.status(201).json({counter});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 }
-
 
 exports.deleteCounterById = async (req, res) => {
     try {
@@ -39,7 +39,12 @@ exports.deleteCounterById = async (req, res) => {
         if (!counterId)
             return res.status(404).json({ message: "Requested user doesn't exist" });
         const counter = await Counter.findByIdAndDelete(req.params.id);
-        res.status(201).json(counter);
+
+        await Dish.deleteMany({counter_id:counterId});
+        const dishes = await Dish.find();
+        
+
+        res.status(201).json({counter, dishes});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -54,7 +59,10 @@ exports.updateCounter = async (req, res) => {
             return res.status(404).json({ message: "Requested user doesn't exist" });
 
         const counter = await Counter.findByIdAndUpdate({ _id: req.params.id }, { shop_name:shop_name }, { new: true });
-        res.status(201).json(counter);
+
+        const counters = await Counter.find();
+
+        res.status(201).json({counters});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
