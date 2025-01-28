@@ -64,6 +64,15 @@ exports.updateUser = async (req, res) => {
     }
 }
 
+exports.getMerchants = async(req,res) =>{
+    try {
+        const merchants = await User.find({role:"merchant"}).select('username');
+        res.status(201).json({merchants});
+    } catch(err) {
+        res.status(500).json({message:err.message});
+    }
+}
+
 exports.me = async(req,res)=>{
     try {
         const userInfo = req.user;
