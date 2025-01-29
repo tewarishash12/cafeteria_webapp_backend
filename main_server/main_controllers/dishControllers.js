@@ -17,7 +17,7 @@ exports.addDish = async (req, res) => {
         const intPrice = parseInt(price)
         const dish = new Dish({ dish_name,description,image,availability,counter_id, price:intPrice });
         const result = await dish.save();
-        const dishes = await Dish.find();
+        const dishes = await Dish.find().populate('counter_id');
         res.status(201).json({ dishes });
     } catch (err) {
         res.status(500).json({ message: err.message });

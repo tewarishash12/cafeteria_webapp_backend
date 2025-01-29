@@ -28,7 +28,7 @@ exports.createCounter = async (req, res) => {
 
         await counter.save();
 
-        const counters = await Counter.find().populate("merchant_id"); // Fetch merchant details
+        const counters = await Counter.find().populate("merchant_id");
 
         res.status(201).json({ counters });
     } catch (err) {
@@ -53,7 +53,7 @@ exports.deleteCounterById = async (req, res) => {
         if (!counterId)
             return res.status(404).json({ message: "Requested user doesn't exist" });
         await Counter.findByIdAndDelete(req.params.id);
-        const counter = await Counter.find();
+        const counter = await Counter.find().populate("merchant_id");
 
         await Dish.deleteMany({counter_id:counterId});
         const dishes = await Dish.find();
@@ -72,11 +72,12 @@ exports.updateCounter = async (req, res) => {
         if (!counterId)
             return res.status(404).json({ message: "Requested user doesn't exist" });
 
-        const counter = await Counter.findByIdAndUpdate({ _id: req.params.id }, { shop_name:shop_name }, { new: true });
+        await Counter.findByIdAndUpdate({ _id: req.params.id }, { shop_name:shop_name }, { new: true });
 
-        const counters = await Counter.find();
+        const counter = await Counter.find().populate("merchant_id");
+        const dishes = await Dish.find().populate('counter_id');
 
-        res.status(201).json({counters});
+        res.status(201).json({counter, dishes});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
