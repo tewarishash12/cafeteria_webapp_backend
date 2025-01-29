@@ -17,15 +17,15 @@ function authLogin(req, res, next) {
 }
 
 function adminRoleValidation() {
-    if (req.user.role = "admin")
-        next();
-    return res.status(400).json({ message: "You are unauthorised to access this page" })
+    if (req.user.role !== "admin")
+        return res.status(400).json({ message: "You are unauthorised to access this page" })
+    next();
 }
 
 function merchantRoleValidation() {
-    if (req.user.role = "merchant")
-        next();
-    return res.status(400).json({ message: "You are unauthorised to access this page" })
+    if (req.user.role !== "merchant")
+        return res.status(400).json({ message: "You are unauthorised to access this page" })
+    next();
 }
 
 module.exports = { authLogin,adminRoleValidation,merchantRoleValidation  }
