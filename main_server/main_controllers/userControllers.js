@@ -78,7 +78,7 @@ exports.me = async(req,res)=>{
         const userInfo = req.user;
         console.log(userInfo)
         const user = await User.findOne({username:userInfo.username}).select("-password -__v").populate("cart.item");
-        res.status(201).json(user);
+        res.status(201).json({user});
     } catch(err) {
         res.status(500).json({message:err.message});
     }
