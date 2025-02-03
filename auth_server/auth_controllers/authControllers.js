@@ -1,4 +1,4 @@
-const User = require("../../models/user");
+const User = require("../auth_model/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -7,7 +7,7 @@ const refreshTokens = new Set();
 
 exports.register = async (req, res) => {
     try {
-        const { username, email, phoneNo, password, role } = req.body;
+        const { username, email, phoneNo, password, role='customer' } = req.body;
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt)
         const user = new User({ username, email, phoneNo, password: hashedPassword, role });
@@ -21,7 +21,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const userInfo = await User.findOne({username:username}).select("-_id -__v")
+        const userInfo = await User.findOne({username:username}).select("-__v")
         
         if(!userInfo)
             return res.status(404).json({message:"User with requested username not found"});
@@ -31,13 +31,13 @@ exports.login = async (req, res) => {
         if(!validation)
             return res.status(401).json({message:"Password entered do not match"});
         
-        const user = {username:userInfo.username, email:userInfo.email, phoneNo: userInfo.phoneNo, role:userInfo.role}
+        const user = {_id:userInfo._id, username:userInfo.username, email:userInfo.email, phoneNo: userInfo.phoneNo, role:userInfo.role}
         const refreshToken = jwt.sign({user}, process.env.REFRESH_TOKEN_SECRET)
         refreshTokens.add(refreshToken);
         
         const access_token = generateAccessToken(user)
         
-        res.status(201).json({ message: "User logged in successfully", access_token:access_token, refreshToken:refreshToken });
+        res.status(201).json({ message: "User logged in successfully", access_token:access_token, refreshToken:refreshToken, user });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -65,7 +65,7 @@ exports.logout = async(req,res) =>{
     try{
         const refreshToken = req.body.token;
         if(!(refreshTokens.has(refreshToken)))
-            return res.status(400).json({message:"Seesion for this token doesn't exist"});
+            return res.status(400).json({message:"Session for this token doesn't exist"});
         refreshTokens.delete(refreshToken);
         res.status(200).json({message:"Seesion has been successfully closed for the user"});
     } catch(err) {
