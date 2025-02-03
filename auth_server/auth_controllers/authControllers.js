@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
         
         const access_token = generateAccessToken(user)
         
-        res.status(201).json({ message: "User logged in successfully", access_token:access_token, refreshToken:refreshToken });
+        res.status(201).json({ message: "User logged in successfully", access_token:access_token, refreshToken:refreshToken, user });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
