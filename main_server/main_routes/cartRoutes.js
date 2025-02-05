@@ -4,10 +4,10 @@ const { addToCart, removeFromCart, updateQuantity } = require("../main_controlle
 
 const { authLogin } = require("../middlewares/authMiddleware");
 
-router.patch("/addtocart", addToCart);
+router.patch("/addtocart", authLogin, addToCart);
 
-router.patch("/removefromcart", removeFromCart);
+router.patch("/removefromcart", authLogin, removeFromCart);
 
-router.patch("/updatecart", updateQuantity);
+router.patch("/updatecart", authLogin, updateQuantity);
 
 module.exports = router;
