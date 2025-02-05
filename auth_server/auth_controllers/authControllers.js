@@ -34,8 +34,7 @@ exports.login = async (req, res) => {
         const user = {_id:userInfo._id}
         const refreshToken = jwt.sign({user}, process.env.REFRESH_TOKEN_SECRET)
         refreshTokens.add(refreshToken);
-        
-        console.log(userInfo.cart);
+
         const userData = {_id:userInfo._id, username:userInfo.username, email:userInfo.email, phoneNo: userInfo.phoneNo, role:userInfo.role, cart: userInfo.cart}
         const access_token = generateAccessToken(user)
         
