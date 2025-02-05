@@ -31,13 +31,15 @@ exports.login = async (req, res) => {
         if(!validation)
             return res.status(401).json({message:"Password entered do not match"});
         
-        const user = {_id:userInfo._id, username:userInfo.username, email:userInfo.email, phoneNo: userInfo.phoneNo, role:userInfo.role}
+        const user = {_id:userInfo._id}
         const refreshToken = jwt.sign({user}, process.env.REFRESH_TOKEN_SECRET)
         refreshTokens.add(refreshToken);
         
+        console.log(userInfo.cart);
+        const userData = {_id:userInfo._id, username:userInfo.username, email:userInfo.email, phoneNo: userInfo.phoneNo, role:userInfo.role, cart: userInfo.cart}
         const access_token = generateAccessToken(user)
         
-        res.status(201).json({ message: "User logged in successfully", access_token:access_token, refreshToken:refreshToken, user });
+        res.status(201).json({ message: "User logged in successfully", access_token:access_token, refreshToken:refreshToken, user:userData });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
