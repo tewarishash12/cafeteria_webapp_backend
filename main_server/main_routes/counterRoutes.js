@@ -1,13 +1,14 @@
 const router = require("express").Router();
 
-const { allCounters, counterDetailById, createCounter, deleteCounterById, updateCounter } = require("../main_controllers/counterControllers");
+const { allCounters, createCounter, deleteCounterById, updateCounter } = require("../main_controllers/counterControllers");
+const { adminRoleValidation, authLogin } = require("../middlewares/authMiddleware");
 
 router.get('/', allCounters);
 
-router.post('/', createCounter);
+router.post('/', authLogin, adminRoleValidation, createCounter);
 
-router.delete("/id/:id", deleteCounterById);
+router.delete("/id/:id", authLogin, adminRoleValidation, deleteCounterById);
 
-router.put("/id/:id", updateCounter);
+router.put("/id/:id", authLogin, adminRoleValidation, updateCounter);
 
 module.exports = router;
