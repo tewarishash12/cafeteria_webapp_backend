@@ -25,18 +25,6 @@ exports.createUser = async (req, res) => {
     }
 }
 
-exports.userDetailById = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id).select('-cart -__v');
-        if (!user)
-            return res.status(404).json({ message: "Requested user doesn't exist" });
-        res.status(201).json(user);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
-
-
 exports.deleteUserById = async (req, res) => {
     try {
         const userId = await User.findById(req.params.id);
@@ -60,15 +48,6 @@ exports.updateUser = async (req, res) => {
 
         await User.findByIdAndUpdate({ _id: req.params.id }, { username: username, email: email, phoneNo: phoneNo, role: role }, { new: true });
         res.status(201).json({message: "User has been updated"});
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
-
-exports.getMerchants = async (req, res) => {
-    try {
-        const merchants = await User.find({ role: "merchant" }).select('username');
-        res.status(201).json({ merchants });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

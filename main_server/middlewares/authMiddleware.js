@@ -18,13 +18,13 @@ function authLogin(req, res, next) {
 
 function adminRoleValidation() {
     if (req.user.role !== "admin")
-        return res.status(400).json({ message: "You are unauthorised to access this page" })
+        return res.status(400).json({ message: "You are unauthorised to interact with this information" })
     next();
 }
 
 function merchantRoleValidation() {
     if (req.user.role !== "merchant")
-        return res.status(400).json({ message: "You are unauthorised to access this page" })
+        return res.status(400).json({ message: "You are unauthorised to interact with this information" })
     next();
 }
 
