@@ -39,7 +39,6 @@ exports.deleteUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     try {
-        console.log(req.body)
         const { username, email, phoneNo, role } = req.body;
         const userId = await User.findById(req.params.id);
 
@@ -56,7 +55,6 @@ exports.updateUser = async (req, res) => {
 exports.me = async (req, res) => {
     try {
         const userInfo = req.user;
-        console.log(userInfo)
         const user = await User.findOne({ username: userInfo.username }).select("-password -__v").populate("cart.item");
         res.status(201).json({ user });
     } catch (err) {

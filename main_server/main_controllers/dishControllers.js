@@ -39,7 +39,6 @@ exports.deleteDishById = async (req, res) => {
 
 exports.updateDishById = async (req, res) => {
     try {
-        console.log(req.body);
         const { dish_name, description, image, price, availability } = req.body;
         const dishId = await Dish.findById(req.params.id);
 

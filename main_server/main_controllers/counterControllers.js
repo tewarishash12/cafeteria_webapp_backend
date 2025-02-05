@@ -13,12 +13,11 @@ exports.allCounters = async (req, res) => {
 }
 
 exports.createCounter = async (req, res) => {
-    console.log(req.body)
     try {
         const counter = new Counter(req.body);
-
+        
         await counter.save();
-
+        
         const counters = await Counter.find().populate("merchant_id");
 
         res.status(201).json({ counters });
@@ -47,7 +46,6 @@ exports.deleteCounterById = async (req, res) => {
 exports.updateCounter = async (req, res) => {
     try {
         const { shop_name,merchant_id,image,hours,description,isActive } = req.body;
-        console.log(image)
         const counterId = await Counter.findById(req.params.id);
         
         if (!counterId)
