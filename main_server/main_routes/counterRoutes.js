@@ -1,10 +1,8 @@
 const router = require("express").Router();
 
-const { allCounters, counterDetailById, createCounter, deleteCounterById, updateCounter, getDishesByCounterId } = require("../main_controllers/counterControllers");
+const { allCounters, counterDetailById, createCounter, deleteCounterById, updateCounter } = require("../main_controllers/counterControllers");
 
 router.get('/', allCounters);
-
-router.get('/id/:id', counterDetailById);
 
 router.post('/', createCounter);
 

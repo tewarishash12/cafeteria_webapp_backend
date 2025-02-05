@@ -27,17 +27,6 @@ exports.createCounter = async (req, res) => {
     }
 }
 
-exports.counterDetailById = async (req, res) => {
-    try {
-        const counter = await Counter.findById(req.params.id).select('-__v').populate("merchant_id", "username phoneNo");
-        if (!counter)
-            return res.status(404).json({ message: "Requested user doesn't exist" });
-        res.status(201).json({counter});
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
-
 exports.deleteCounterById = async (req, res) => {
     try {
         const counterId = await Counter.findById(req.params.id);
