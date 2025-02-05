@@ -13,26 +13,14 @@ exports.allCounters = async (req, res) => {
 }
 
 exports.createCounter = async (req, res) => {
-    console.log(req.body)
     try {
         const counter = new Counter(req.body);
-
+        
         await counter.save();
-
+        
         const counters = await Counter.find().populate("merchant_id");
 
         res.status(201).json({ counters });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
-
-exports.counterDetailById = async (req, res) => {
-    try {
-        const counter = await Counter.findById(req.params.id).select('-__v').populate("merchant_id", "username phoneNo");
-        if (!counter)
-            return res.status(404).json({ message: "Requested user doesn't exist" });
-        res.status(201).json({counter});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -63,7 +51,7 @@ exports.updateCounter = async (req, res) => {
         if (!counterId)
             return res.status(404).json({ message: "Requested user doesn't exist" });
 
-        await Counter.findByIdAndUpdate({ _id: req.params.id }, { shop_name:shop_name, description:description, merchant_id:merchant_id, imae:image, hours:hours, isActive:isActive }, { new: true });
+        await Counter.findByIdAndUpdate({ _id: req.params.id }, { shop_name:shop_name, description:description, merchant_id:merchant_id, image:image, hours:hours, isActive:isActive }, { new: true });
 
         const counters = await Counter.find().populate("merchant_id");
         const dishes = await Dish.find().populate('counter_id');
