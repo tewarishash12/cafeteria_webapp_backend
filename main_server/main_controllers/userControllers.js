@@ -37,16 +37,32 @@ exports.deleteUserById = async (req, res) => {
     }
 }
 
-exports.updateUser = async (req, res) => {
+exports.updateRole = async (req, res) => {
     try {
-        const { username, email, phoneNo, role } = req.body;
+        const { role } = req.body;
         const userId = await User.findById(req.params.id);
 
         if (!userId)
             return res.status(404).json({ message: "Requested user doesn't exist" });
 
-        await User.findByIdAndUpdate({ _id: req.params.id }, { username: username, email: email, phoneNo: phoneNo, role: role }, { new: true });
+        await User.findByIdAndUpdate({ _id: req.params.id }, { role: role }, { new: true });
         res.status(201).json({message: "User has been updated"});
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+exports.updateUserInfo = async (req, res) => {
+    try {
+        const { username, email, phoneNo } = req.body;
+        const userId = await User.findById(req.params.id);
+        
+        if (!userId)
+            return res.status(404).json({ message: "Requested user doesn't exist" });
+        
+        await User.findByIdAndUpdate({ _id: req.params.id }, { username: username, email: email, phoneNo: phoneNo }, { new: true });
+        const updatedUser = await User.findById(req.params.id);
+        res.status(201).json({message: "User has been updated", user: updatedUser});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -54,8 +70,8 @@ exports.updateUser = async (req, res) => {
 
 exports.me = async (req, res) => {
     try {
-        const userInfo = req.user;
-        const user = await User.findOne({ username: userInfo.username }).select("-password -__v").populate("cart.item");
+        const userId = req.user._id;
+        const user = await User.findById(userId).select("-password -__v").populate("cart.item");
         res.status(201).json({ user });
     } catch (err) {
         res.status(500).json({ message: err.message });
