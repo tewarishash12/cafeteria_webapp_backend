@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const User = require("../main_model/user");
 
 function authLogin(req, res, next) {
     const authHeader = req.headers['authorization'];
@@ -8,10 +9,11 @@ function authLogin(req, res, next) {
     if (!accesstoken)
         return res.status(400).json({ message: "Access token is tampered" });
     
-    jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+    jwt.verify(accesstoken, process.env.ACCESS_TOKEN_SECRET, async (err, data) => {
         if (err) return res.status(403).json({ message: "Unauthorized to access" });
 
-        req.user = data.user;
+        const userData = await User.findById(data.user._id).select("-__v")
+        req.user = userData;
         next(); 
     })
 }
