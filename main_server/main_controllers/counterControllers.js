@@ -58,12 +58,13 @@ exports.deleteCounterById = async (req, res) => {
 exports.updateCounter = async (req, res) => {
     try {
         const { shop_name,merchant_id,image,hours,description,isActive } = req.body;
+        console.log(image)
         const counterId = await Counter.findById(req.params.id);
         
         if (!counterId)
             return res.status(404).json({ message: "Requested user doesn't exist" });
 
-        await Counter.findByIdAndUpdate({ _id: req.params.id }, { shop_name:shop_name, description:description, merchant_id:merchant_id, imae:image, hours:hours, isActive:isActive }, { new: true });
+        await Counter.findByIdAndUpdate({ _id: req.params.id }, { shop_name:shop_name, description:description, merchant_id:merchant_id, image:image, hours:hours, isActive:isActive }, { new: true });
 
         const counters = await Counter.find().populate("merchant_id");
         const dishes = await Dish.find().populate('counter_id');
