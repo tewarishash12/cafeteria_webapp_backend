@@ -42,14 +42,13 @@ npm start
 
 ## API Endpoints
 ### Authentication Server
-- `POST /register` - Register a new user
-- `POST /login` - Authenticate user
-- `GET /profile` - Retrieve user profile (requires authentication)
+- `POST /auth/register` - Register a new user
+- `POST /auth/login` - Authenticate user
 
 ### Main Server
-- `GET /dishes` - Retrieve available dishes
-- `POST /cart/add` - Add dish to cart
-- `POST /counter` - Manage counters
+- `GET /dish/alldishes` - Retrieve available dishes
+- `POST /cart/addtocart` - Add dish to cart: (For loggedin user only)
+- `POST /counter` - Adding counters (for admins only)
 
 ## Contributors
 - **[Shashwat Tewari](https://github.com/tewarishash12)** - Developer
