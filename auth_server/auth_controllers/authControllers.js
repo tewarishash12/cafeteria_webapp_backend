@@ -2,6 +2,7 @@ const User = require("../auth_model/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const Dish = require("../auth_model/dish")
 
 const refreshTokens = new Set();
 
@@ -21,7 +22,10 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const userInfo = await User.findOne({username:username}).select("-__v")
+
+        const userInfo = await User.findOne({username:username}).select("-__v").populate("cart.item")
+        console.log(userInfo);
+        
         
         if(!userInfo)
             return res.status(404).json({message:"User with requested username not found"});
