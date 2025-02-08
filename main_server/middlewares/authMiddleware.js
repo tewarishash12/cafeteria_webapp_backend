@@ -24,10 +24,17 @@ function adminRoleValidation(req,res,next) {
     next();
 }
 
+function adminMerchantValidation(req,res,next) {
+    console.log(req.user.role)
+    if (!(req.user.role !== "admin" || req.user.role !=="merchant"))
+        return res.status(403).json({ message: "You are unauthorised to interact with this information" })
+    next();
+}
+
 function merchantRoleValidation(req,res,next) {
     if (req.user.role !== "merchant")
         return res.status(403).json({ message: "You are unauthorised to interact with this information" })
     next();
 }
 
-module.exports = { authLogin,adminRoleValidation,merchantRoleValidation  }
+module.exports = { authLogin,adminRoleValidation,adminMerchantValidation,merchantRoleValidation  }

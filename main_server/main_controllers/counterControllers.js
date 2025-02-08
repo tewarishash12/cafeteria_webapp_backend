@@ -56,7 +56,7 @@ exports.updateCounter = async (req, res) => {
         const counters = await Counter.find().populate("merchant_id");
         const dishes = await Dish.find().populate('counter_id');
 
-        res.status(201).json({counters, dishes});
+        res.status(201).json({dishes});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
